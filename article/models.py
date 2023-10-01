@@ -6,13 +6,12 @@ from authors.models import AuthorDetailsModel
 class ArticleModel(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
-    image = models.ImageField()
+    image = models.ImageField(null=True, blank=True)
     author = models.ForeignKey(AuthorDetailsModel, on_delete=models.CASCADE)
     body = models.TextField()
     category_id = models.CharField(max_length=200)
 
     def save(self):
-        self.author = self.request.user
         self.slug = slugify(self.title)
         return super().save()
     
