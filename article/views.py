@@ -12,6 +12,12 @@ class AddArticleView(SuccessMessageMixin, CreateView):
     success_url = '/articles/'
     success_message = "Your article has been added."
 
+    def post(self, request):
+        if request.method=='POST':
+            form = ArticleForm(request.POST)
+            if form.is_valid():
+                pass
+
 class UpdateArticleView(SuccessMessageMixin, UpdateView):
     model = ArticleModel
     template_name = "article_form.html"

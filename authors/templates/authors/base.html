@@ -11,20 +11,7 @@
     <title>{% block title %}Articles{% endblock %}</title>
   </head>
   <body>
-    <div class="container">
-        <form action="" method="post" enctype="multipart/form-data">
-          {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-primary" role="alert">
-                {{message}}
-            </div>
-            {% endfor %}
-          {% endif %}
-          {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-outline-success w-100 mt-2">Submit</button>
-        </form>
-    </div>
+    {% block content %}{% endblock %}
 
     <!-- Optional JavaScript; choose one of the two! -->
 

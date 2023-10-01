@@ -1,12 +1,13 @@
 from django.db import models
 from slugify import slugify
+from authors.models import AuthorDetailsModel
 
 # Create your models here.
 class ArticleModel(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
     image = models.ImageField()
-    author = models.CharField(max_length=200)
+    author = models.ForeignKey(AuthorDetailsModel, on_delete=models.CASCADE)
     body = models.TextField()
     category_id = models.CharField(max_length=200)
 
