@@ -44,7 +44,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('home')
+        return redirect('/')
     
 class AddAuthorView(View):
     template_name = 'authors/sign_up.html'

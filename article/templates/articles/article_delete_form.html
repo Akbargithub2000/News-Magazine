@@ -1,0 +1,15 @@
+{% extends 'articles/base.html' %}
+
+{% block title %}Delete/{{article.slug}}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <samp>Are you sure you want to delete article {{article.title}}</samp><br>
+        <button type="submit" class="btn btn-outline-danger">Confirm</button>
+    </form>
+</div>
+
+{% endblock %}

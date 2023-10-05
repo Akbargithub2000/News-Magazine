@@ -1,7 +1,7 @@
 from typing import Any
 from django import http
 from django.shortcuts import render, redirect
-from django.views.generic import View, UpdateView, TemplateView, DetailView
+from django.views.generic import View, UpdateView, TemplateView, DetailView, ListView
 from django.views.generic.edit import DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from article.models import ArticleModel
@@ -54,3 +54,20 @@ class ArticleDetailView(DetailView):
 class DeleteArticleView(DeleteView):
     model = ArticleModel
     success_url = '/authors/homepage/'
+    context_object_name = 'article'
+    template_name = 'articles/article_delete_form.html'
+
+class ArticleViewByCategory(ListView):
+    model = ArticleModel
+    paginate_by = 24
+    context_object_name = 'article'
+    template_name = 'articles/articles_category.html'
+
+    def get_queryset(self):
+        return ArticleModel.objects.filter(category__icontains = self.kwargs.get('category'))
+    
+class ArticlesView(ListView):
+    model = ArticleModel
+    paginate_by = 24
+    context_object_name = 'article'
+    template_name = 'articles/home.html'

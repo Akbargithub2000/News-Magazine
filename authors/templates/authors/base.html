@@ -8,10 +8,53 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>{% block title %}Articles{% endblock %}</title>
-    {% block css %}{% endblock %}
+    <title>{% block title %}Author{% endblock %}</title>
   </head>
   <body>
+    {% block navbar %}
+    <div class="d-flex justify-content-between navbar-light bg-light">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'articles' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact Us</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Category
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="/articles/Business/article/">Business</a></li>
+          <li><a class="dropdown-item" href="/articles/History/article/">History</a></li>
+          <li><a class="dropdown-item" href="/articles/Politics/article/">Politics</a></li>
+          <li><a class="dropdown-item" href="/articles/Suspense/article/">Suspense</a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav">
+      {% if request.user.is_anonymous %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'author_login' %}">Login</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'author-logout' %}">Logout</a>
+      </li>
+      {% endif %}
+      {% if request.user.is_superuser %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'add-author' %}">Add Author</a>
+      </li>
+      {% endif %}
+      {% if not request.user.is_anonymous %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+    {% endblock %}
     {% block content %}{% endblock %}
 
     <!-- Optional JavaScript; choose one of the two! -->

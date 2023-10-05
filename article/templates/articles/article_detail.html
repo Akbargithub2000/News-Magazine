@@ -1,14 +1,31 @@
 {% extends 'articles/base.html' %}
 
+{% block title %}Article/{{article.slug}}{% endblock %}
+
 {% block content %}
     <div class="container mb-5 mt-5">
         <figure class="figure w-100">
+            {% if article.image %}
             <img src="{{ article.image.url }}" class="figure-img img-fluid rounded w-100" alt="...">
+            {% else %}
+            <img src="" class="figure-img img-fluid rounded w-100" alt="...">
+            {% endif %}
             <h4 style="text-decoration: dashed;font-style: italic;">{{article.title}}</h4>
         </figure>
+        <hr>
         <div class="d-flex align-items-center" href="">
-            <div class="avatar avatar-l"><img class="rounded-circle" src="{{article.author.authordetailsmodel.image.url}}" alt=""></div>
-            <h6 class="mb-0 ms-3">{{article.author.get_full_name}}</h6>
+            <div class="avatar avatar-l"><img class="rounded-circle" src="{{article.author.authordetailsmodel.image.url}}" alt="" style="width:50px; height:50px"></div>
+            <h4 class="mb-0 ms-3">{{article.author.get_full_name}}</h4>
         </div>
+        <hr>
+        <div class="container">
+            <samp>{{article.body}}</samp>
+        </div>
+        {% if article.author == request.user %}
+        <div class="d-flex align-items-center">
+            <a href="{% url 'update-article' article.slug %}"><button type="button" class="btn btn-outline-success m-2">Edit</button></a>
+            <a href="{% url 'delete-article' article.slug %}"><button type="button" class="btn btn-outline-danger m-2">Delete</button></a>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}
