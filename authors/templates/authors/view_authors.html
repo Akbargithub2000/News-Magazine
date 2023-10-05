@@ -1,0 +1,35 @@
+{% extends 'articles/base.html' %}
+
+{% block title %}Authors{% endblock %}
+
+{% block content %}
+{% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+            {{message}}
+        </div>
+        {% endfor %}
+{% endif %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Sr No</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone No</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in authors %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td><a href="{% url 'author-profile' member.id %}" style="text-decoration: none;">{{member.user.get_full_name}}</a></td>
+            <td>{{member.user.email}}</td>
+            <td>{{member.phone_no}}</td>
+            <td><a href="{% url 'delete-author' member.id %}"><button class="btn btn-danger">Delete</button></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
