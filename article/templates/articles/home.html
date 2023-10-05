@@ -3,6 +3,24 @@
 {% block content %}
 
 <main>
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">Welcome to News Article</h1>
+          </p>
+        </div>
+      </div>
+    </section>
+
     <div class="album py-5 bg-light">
       <div class="container">
             {% if article %}

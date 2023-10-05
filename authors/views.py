@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, UpdateView, TemplateView
+from django.views.generic import View, UpdateView, TemplateView, DetailView
+from django.views.generic.edit import DeleteView
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
@@ -24,6 +25,38 @@ class LoginView(View):
 
                 if not User.objects.filter(username=username).exists():
                     messages.error(request, "Invalid Username")
+                    return redirect('admin_login')
+
+                user = authenticate(username=username, password=password)
+
+                if user is None:
+                    messages.error(request, "Invalid Password.")
+                    return redirect('admin_login')
+
+                login(request, user)
+                messages.success(request, "Login Successful.")
+                return redirect('profile')
+            else:
+                messages.error(request, "Invalid Form.")
+                return redirect('admin_login')
+        login_form = LoginForm()
+        return render(request, self.template_name, {'form': login_form})
+
+class AdminLoginView(View):
+    template_name = 'authors/login_form.html'
+    form_class = LoginForm
+    def get(self, request):
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+    def post(self, request):
+        if request.method == 'POST':
+            login_form = LoginForm(request.POST)
+            if login_form.is_valid():
+                username = login_form.cleaned_data.get('username')
+                password = login_form.cleaned_data.get('password')
+
+                if not User.objects.filter(username=username).exists():
+                    messages.error(request, "Invalid Username")
                     return redirect('author_login')
 
                 user = authenticate(username=username, password=password)
@@ -31,16 +64,17 @@ class LoginView(View):
                 if user is None:
                     messages.error(request, "Invalid Password.")
                     return redirect('author_login')
-
+                if not user.is_superuser:
+                    messages.error(request, "Not an Admin. Login as an Author")
                 login(request, user)
                 messages.success(request, "Login Successful.")
-                return redirect('profile')
+                return redirect('/')
             else:
                 messages.error(request, "Invalid Form.")
                 return redirect('author_login')
         login_form = LoginForm()
         return render(request, self.template_name, {'form': login_form})
-    
+
 class LogoutView(View):
     def get(self, request):
         logout(request)
@@ -83,8 +117,8 @@ class AddAuthorView(View):
                 user.save()
                 author_details.save()
 
-                messages.error(request, 'Successfully registered.')
-                return redirect('author_login')
+                messages.success(request, 'Successfully registered.')
+                return redirect('add-author')
             else:
                 messages.error(request, 'Enter valid data')
                 return redirect('add-author')
@@ -98,6 +132,27 @@ class EditAuthorDetailsView(SuccessMessageMixin, UpdateView):
     success_url = '/authors/login/'
     success_message = 'Profile edited successfully.'
 
+class DeleteAuthorView(SuccessMessageMixin, View):
+    template_name = 'authors/delete_author.html'
+    success_message = 'Author deleted'
+    model = AuthorDetailsModel
+
+    def get(self, request, id):
+        author = AuthorDetailsModel.objects.get(id=id)
+        return render(request, self.template_name, {'author': author})
+    
+    def post(self, request, id):
+        author = AuthorDetailsModel.objects.get(id=id)
+        author.user.delete()
+        author.delete()
+        messages.success(request, 'Author Deleted Successfully.')
+        return redirect('all-authors')
+    
+class AuthorProfileView(DetailView):
+    template_name = 'authors/view_author.html'
+    model = AuthorDetailsModel
+    context_object_name = 'author'
+
 class ProfileView(View):
     template_name = 'authors/profile.html'
 
@@ -110,3 +165,11 @@ class AuthorHomePage(View):
     def get(self, request):
         posts = ArticleModel.objects.filter(author=request.user.id)
         return render(request, self.template_name, {'posts': posts})
+    
+class AllAuthorsView(TemplateView):
+    template_name = 'authors/view_authors.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['authors'] = AuthorDetailsModel.objects.all()
+        return context
