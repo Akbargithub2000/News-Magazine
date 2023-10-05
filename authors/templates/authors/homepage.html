@@ -1,0 +1,50 @@
+{% extends 'authors/base.html' %}
+
+{% block content %}
+
+<main>
+
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">{{user.get_full_name}}</h1>
+          <p class="lead text-muted">Your collections are stored here<br>You can add a new artice by clicking the button below.
+          </p>
+          <p>
+            <a href="{% url 'add-article' %}" class="btn btn-primary my-2">Add an Article</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  
+    <div class="album py-5 bg-light">
+      <div class="container">
+            {% if posts %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mt-2 mb-2">
+            {% for post in posts %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                      <img src="{{post.image.url}}" class="img-fluid" alt="..." style="height:255px;">
+                    <div class="card-body">
+                        <p class="card-text">{{post.title}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                          <a href="{% url 'article-details' post.slug %}" style="margin:0px"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                            <a href="{% url 'update-article' post.slug %}"><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+                        </div>
+                        <small class="text-muted">{{post.category}}</small>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            {% else %}
+                <h3 class="text-center">No posts yet.</h3>
+            {% endif %}
+      </div>
+    </div>
+  
+  </main>
+
+{% endblock %}

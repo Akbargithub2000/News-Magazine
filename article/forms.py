@@ -2,8 +2,8 @@ from django import forms
 from article.models import ArticleModel, CategoryModel
 
 class ArticleForm(forms.ModelForm):
-    category_id = forms.ModelChoiceField(queryset=CategoryModel.objects.all(), to_field_name='category', label="Category", empty_label='Choose Category')
-    category_id.widget.attrs.update({'class':'form-control'})
+    category = forms.ModelChoiceField(queryset=CategoryModel.objects.all(), to_field_name='category', label="Category", empty_label='Choose Category')
+    category.widget.attrs.update({'class':'form-control'})
     class Meta:
         model = ArticleModel
         fields = ('title', 'image', 'body')

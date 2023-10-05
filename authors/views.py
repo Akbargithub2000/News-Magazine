@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView
+from django.views.generic import View, UpdateView, TemplateView
 from django.contrib.auth.models import User
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from authors.forms import LoginForm, SignUpForm
+from authors.forms import LoginForm, SignUpForm, EditProfileForm
 from authors.models import AuthorDetailsModel
+from article.models import ArticleModel
 
 # Create your views here.
 class LoginView(View):
@@ -15,16 +17,16 @@ class LoginView(View):
         return render(request, self.template_name, {'form': form})
     def post(self, request):
         if request.method == 'POST':
-            form = LoginForm(request.POST)
-            if form.is_valid():
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password')
+            login_form = LoginForm(request.POST)
+            if login_form.is_valid():
+                username = login_form.cleaned_data.get('username')
+                password = login_form.cleaned_data.get('password')
 
                 if not User.objects.filter(username=username).exists():
                     messages.error(request, "Invalid Username")
                     return redirect('author_login')
 
-                user = authenticate(username, password)
+                user = authenticate(username=username, password=password)
 
                 if user is None:
                     messages.error(request, "Invalid Password.")
@@ -32,12 +34,12 @@ class LoginView(View):
 
                 login(request, user)
                 messages.success(request, "Login Successful.")
-                return redirect('home')
+                return redirect('profile')
             else:
-                messages.error(request, "Enter valid data.")
+                messages.error(request, "Invalid Form.")
                 return redirect('author_login')
-        form = LoginForm()
-        return render(request, self.template_name, {'form': form})
+        login_form = LoginForm()
+        return render(request, self.template_name, {'form': login_form})
     
 class LogoutView(View):
     def get(self, request):
@@ -71,6 +73,7 @@ class AddAuthorView(View):
                 
                 if User.objects.filter(username=username).exists():
                     messages.error(request, "Username already exists.")
+                    return redirect('add-author')
 
                 user = User(username=username, email=email, first_name=first_name, last_name=last_name)
                 user.set_password(password)
@@ -87,3 +90,23 @@ class AddAuthorView(View):
                 return redirect('add-author')
         form = SignUpForm()
         return render(request, self.template_name, {'form': form})
+    
+class EditAuthorDetailsView(SuccessMessageMixin, UpdateView):
+    model = AuthorDetailsModel
+    template_name = 'authors/edit_profile.html'
+    form_class = EditProfileForm
+    success_url = '/authors/login/'
+    success_message = 'Profile edited successfully.'
+
+class ProfileView(View):
+    template_name = 'authors/profile.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+    
+class AuthorHomePage(View):
+    template_name = 'authors/homepage.html'
+    
+    def get(self, request):
+        posts = ArticleModel.objects.filter(author=request.user.id)
+        return render(request, self.template_name, {'posts': posts})

@@ -1,0 +1,14 @@
+{% extends 'articles/base.html' %}
+
+{% block content %}
+    <div class="container mb-5 mt-5">
+        <figure class="figure w-100">
+            <img src="{{ article.image.url }}" class="figure-img img-fluid rounded w-100" alt="...">
+            <h4 style="text-decoration: dashed;font-style: italic;">{{article.title}}</h4>
+        </figure>
+        <div class="d-flex align-items-center" href="">
+            <div class="avatar avatar-l"><img class="rounded-circle" src="{{article.author.authordetailsmodel.image.url}}" alt=""></div>
+            <h6 class="mb-0 ms-3">{{article.author.get_full_name}}</h6>
+        </div>
+    </div>
+{% endblock %}

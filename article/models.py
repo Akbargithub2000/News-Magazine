@@ -1,15 +1,16 @@
 from django.db import models
 from slugify import slugify
-from authors.models import AuthorDetailsModel
+# from authors.models import AuthorDetailsModel
+from django.contrib.auth.models import User
 
 # Create your models here.
 class ArticleModel(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField()
     image = models.ImageField(null=True, blank=True)
-    author = models.ForeignKey(AuthorDetailsModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
-    category_id = models.CharField(max_length=200)
+    category = models.CharField(max_length=200)
 
     def save(self):
         self.slug = slugify(self.title)
