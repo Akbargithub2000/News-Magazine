@@ -1,4 +1,4 @@
-![Screenshot (32)](https://github.com/Akbargithub2000/News-Magazine/assets/101976382/98c4310a-60a3-4965-8888-b45b313f6be1)# News-Magazine
+# News-Magazine
 News Magazine
 Home Page
 ![Screenshot (24)](https://github.com/Akbargithub2000/News-Magazine/assets/101976382/a8e5dcbe-2b27-4a5b-98a0-6e67486cb74a)
