@@ -18,12 +18,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from article.views import ArticlesView
+from news.views import ContactUsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('articles/', include('article.urls')),
     path('authors/', include('authors.urls')),
-    path('', ArticlesView.as_view(), name='articles')
+    path('', ArticlesView.as_view(), name='articles'),
+    path('contact/', ContactUsView.as_view(), name='contact-us')
 ]
 
 if settings.DEBUG:

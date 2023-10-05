@@ -1,0 +1,32 @@
+{% extends 'articles/base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">Contact Us</h1>
+          <samp>We appreciate your feedback and responses. Kindly fill all the details.</samp>
+          </p>
+        </div>
+      </div>
+    </section>
+
+<div class="container">
+  <form action="" method="post">
+    {% csrf_token %}
+      {{form.as_p}}
+      <button type="submit" class="btn btn-outline-success w-100 mt-2">Submit</button>
+  </form>
+</div>
+{% endblock %}
