@@ -32,6 +32,10 @@ class LoginView(View):
                 if user is None:
                     messages.error(request, "Invalid Password.")
                     return redirect('admin_login')
+                
+                if user.is_superuser:
+                    messages.error(request, 'You are an admin. Please Login through admin portal.')
+                    return redirect('admin_login')
 
                 login(request, user)
                 messages.success(request, "Login Successful.")
@@ -163,7 +167,7 @@ class AuthorHomePage(View):
     template_name = 'authors/homepage.html'
     
     def get(self, request):
-        posts = ArticleModel.objects.filter(author=request.user.id)
+        posts = ArticleModel.objects.filter(author=request.user.id).order_by('-id')
         return render(request, self.template_name, {'posts': posts})
     
 class AllAuthorsView(TemplateView):

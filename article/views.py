@@ -64,10 +64,11 @@ class ArticleViewByCategory(ListView):
     template_name = 'articles/articles_category.html'
 
     def get_queryset(self):
-        return ArticleModel.objects.filter(category__icontains = self.kwargs.get('category'))
+        return ArticleModel.objects.filter(category__icontains = self.kwargs.get('category')).order_by('-id')
     
 class ArticlesView(ListView):
     model = ArticleModel
     paginate_by = 24
+    queryset = ArticleModel.objects.all().order_by('-id')
     context_object_name = 'article'
     template_name = 'articles/home.html'
