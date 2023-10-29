@@ -1,15 +1,16 @@
 # News-Magazine
 
 #Description
+
 Introducing a cutting-edge news article website meticulously crafted using HTML, CSS, Bootstrap, and Django. This dynamic platform is designed to provide a seamless and comprehensive news reading experience, catering to a wide range of interests and preferences. With a powerful authentication system in place, it ensures the utmost security and convenience for both administrators and authors.
 
 #Key Features
-1. Diverse News Categories: The website covers a plethora of topics, from politics and technology to sports and entertainment. You'll find the latest news and insights on a variety of subjects, all neatly organized for your convenience.
+1. Diverse News Categories: The website covers a plethora of topics, from politics and technology to history and suspense. You'll find the latest news and insights on a variety of subjects, all neatly organized for your convenience.
 2. Category Filtering: Easily find articles on topics that pique your interest by utilizing our intuitive category filtering feature. Dive into specific news categories with a single click, ensuring you get the most relevant and up-to-date information.
 3. Robust Authentication System: Security is paramount, and our authentication system ensures that your data is safe. We offer separate login processes for administrators and authors. Admins have exclusive access to manage users, while authors can focus on creating, updating, and deleting their articles.
 4. Author Empowerment: Authors have the freedom to craft and curate their articles with ease. Our user-friendly interface allows authors to add, edit, and delete their content effortlessly, ensuring the news you read is always fresh and accurate.
-5. Admin Superpowers: Administrators are the backbone of "The Daily Digest." They can oversee and moderate the entire platform. This includes managing authors, adding new talent to the team, and maintaining the overall integrity of the website.
-6. Class-Based Views: We've implemented advanced Django concepts, such as class-based views, to optimize the performance and scalability of our website. This ensures that "The Daily Digest" remains fast, responsive, and adaptable to future enhancements.
+5. Admin Superpowers: Administrators are the backbone of the website They can oversee and moderate the entire platform. This includes managing authors, adding new talent to the team, and maintaining the overall integrity of the website.
+6. Class-Based Views: We've implemented advanced Django concepts, such as class-based views, to optimize the performance and scalability of our website. This ensures that the websote remains fast, responsive, and adaptable to future enhancements.
 
 
 Home Page
